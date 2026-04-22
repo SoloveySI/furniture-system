@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Личный кабинет - Офисная мебель</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .sidebar {
+        min-height: 100vh;
+        background: #eee;
+        padding: 20px;
+        border-right: 1pt solid #ddd;
+      }
+      .header-line {
+        border-bottom: 2pt solid #ccc;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row bg-white py-3 px-4 align-items-center shadow-sm">
+        <div class="col-md-3">
+          <h4 class="mb-0">Офисная мебель</h4>
+        </div>
+        <div class="col-md-6 text-center">
+          <h3 class="mb-0 text-decoration-underline">Личный кабинет</h3>
+        </div>
+        <div class="col-md-3 text-end">
+          <span class="me-3">Здравствуйте, Имя менеджера</span>
+          <button class="btn btn-outline-danger btn-sm">Выйти</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block sidebar">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="#">Заказы</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="#">Покупатели</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link fw-bold bg-warning-subtle text-dark rounded"
+                href="#"
+                >Отчеты</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <main class="col-md-10 p-4">
+          <h2 class="mb-4">Управление отчетами</h2>
+
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>№ п/п</th>
+                    <th>Название отчета</th>
+                    <th>Тип отчета</th>
+                    <th>Дата создания</th>
+                    <th>Создатель</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Отчет по продажам - Мебель</td>
+                    <td>Продажи</td>
+                    <td>12.03.2023</td>
+                    <td>Менеджер А.Б.</td>
+                    <td><span class="badge bg-success">Сформирован</span></td>
+                    <td>
+                      <button class="btn btn-outline-secondary btn-sm">
+                        Подробнее
+                      </button>
+                      <button class="btn btn-light btn-sm">✎</button>
+                      <button class="btn btn-light btn-sm text-danger">
+                        🗑
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="table-info">
+                    <td>2</td>
+                    <td>
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        value="Складские запасы"
+                      />
+                    </td>
+                    <td>Склад</td>
+                    <td>15.03.2023</td>
+                    <td>Менеджер В.Г.</td>
+                    <td><span class="badge bg-success">Сформирован</span></td>
+                    <td>
+                      <button class="btn btn-primary btn-sm">Сохранить</button>
+                      <button class="btn btn-outline-dark btn-sm">✕</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="text-end mt-3">
+                <button class="btn btn-outline-dark">
+                  Создать новый отчет
+                </button>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
