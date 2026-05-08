@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Корзина - Офисная мебель</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+</html>
+<body class="bg-light">
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">Офисная мебель</a>
+        <div class="ms-auto">
+          <a class="btn btn-outline-secondary btn-sm" href="index.html"
+            >Вернуться в каталог</a
+          >
+        </div>
+      </div>
+    </nav>
+  </header>
+</body>
+<main class="container my-5">
+  <h2 class="mb-4">Ваша корзина</h2>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0 mb-3">
+        <div class="card-body">
+          <div class="row align-items-center mb-3">
+            <div class="col-3 col-md-2">
+              <img src="img/Кресло.jpg" class="img-fluid rounded" alt="Товар" />
+            </div>
+            <div class="col-6 col-md-7">
+              <h6 class="mb-0">Кресло руководителя</h6>
+              <small class="text-muted">Арт: 12345</small>
+            </div>
+            <div class="col-3 col-md-3 text-end">
+              <span class="fw-bold">1950 руб.</span>
+              <button class="btn btn-sm text-danger d-block ms-auto mt-2 p-0">
+                Удалить
+              </button>
+            </div>
+          </div>
+          <hr />
+          <div class="row align-items-center">
+            <div class="col-3 col-md-2">
+              <img src="img/Стол.jpg" class="img-fluid rounded" alt="Товар" />
+            </div>
+            <div class="col-6 col-md-7">
+              <h6 class="mb-0">Офисный стол "Премиум"</h6>
+              <small class="text-muted">Арт: 67890</small>
+            </div>
+            <div class="col-3 col-md-3 text-end">
+              <span class="fw-bold">1200 руб.</span>
+              <button class="btn btn-sm text-danger d-block ms-auto mt-2 p-0">
+                Удалить
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Детали заказа</h5>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Товары (2)</span>
+            <span>3150 руб.</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Доставка</span>
+            <span class="text-success">Бесплатно</span>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between mb-4">
+            <span class="fw-bold">Итого:</span>
+            <span class="fw-bold fs-5">3150 руб.</span>
+          </div>
+          <button class="btn btn-success w-100 py-2 fw-bold">
+            Оформить заказ
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
