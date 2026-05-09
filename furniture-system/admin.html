@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Панель Администратора | Офисная мебель</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .product-img-preview {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+      .card {
+        border: none;
+        border-radius: 12px;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <!-- Шапка -->
+    <nav class="navbar navbar-dark bg-danger mb-4 shadow-sm">
+      <div class="container">
+        <span class="navbar-brand fw-bold">Панель управления товарами</span>
+        <a href="index.html" class="btn btn-outline-light btn-sm"
+          >Перейти в каталог</a
+        >
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row">
+        <!-- Форма добавления и редактирования -->
+        <div class="col-md-4">
+          <div class="card shadow-sm p-4 mb-4">
+            <h4 id="form-title" class="mb-3">Добавить товар</h4>
+            <form id="product-form">
+              <input type="hidden" id="product-id" />
+              <div class="mb-3">
+                <label class="form-label">Название товара</label>
+                <input
+                  type="text"
+                  id="p-title"
+                  class="form-control"
+                  placeholder="Например: Стол Премиум"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Цена</label>
+                <input
+                  type="text"
+                  id="p-price"
+                  class="form-control"
+                  placeholder="Например: 1200 руб."
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Путь к картинке</label>
+                <input
+                  type="text"
+                  id="p-img"
+                  class="form-control"
+                  placeholder="img/название.jpg"
+                />
+                <div class="form-text text-muted small">
+                  Указывай путь из папки проекта.
+                </div>
+              </div>
+              <button
+                type="submit"
+                id="submit-btn"
+                class="btn btn-danger w-100 fw-bold"
+              >
+                Сохранить товар
+              </button>
+              <button
+                type="button"
+                id="cancel-btn"
+                class="btn btn-link w-100 mt-2 text-decoration-none text-muted"
+                onclick="resetForm()"
+                style="display: none"
+              >
+                Отмена
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Таблица товаров -->
+        <div class="col-md-8">
+          <div class="card shadow-sm p-4">
+            <h4 class="mb-3">Текущий ассортимент</h4>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Фото</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th class="text-end">Действие</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-product-list">
+                  <!-- Сюда выведутся товары -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Твои товары для инициализации, если в памяти пусто
+      const defaultProducts = [
+        {
+          id: 1,
+          title: 'Офисный стол "Премиум"',
+          price: "1200 руб.",
+          img: "img/Стол.jpg",
+        },
+        {
+          id: 2,
+          title: "Кресло эргономичное",
+          price: "850 руб.",
+          img: "img/Кресло1.jpg",
+        },
+        {
+          id: 3,
+          title: "Шкаф для документов",
+          price: "1500 руб.",
+          img: "img/Шкаф.jpg",
+        },
+        {
+          id: 4,
+          title: "Диван офисный",
+          price: "2200 руб.",
+          img: "img/Диван.jpg",
+        },
+        {
+          id: 5,
+          title: "Тумба подкатная",
+          price: "450 руб.",
+          img: "img/Тумба.jpg",
+        },
+        {
+          id: 6,
+          title: "Стеллаж для папок",
+          price: "900 руб.",
+          img: "img/Стеллаж.jpg",
+        },
+        {
+          id: 7,
+          title: "Тумба для документов",
+          price: "180 руб.",
+          img: "img/Pedestal.jpg",
+        },
+        {
+          id: 8,
+          title: "Кресло руководителя",
+          price: "1950 руб.",
+          img: "img/Кресло.jpg",
+        },
+        {
+          id: 9,
+          title: "Стол компьютерный",
+          price: "1100 руб.",
+          img: "img/Стол1.jpg",
+        },
+      ];
+
+      // Загружаем данные из localStorage или берем список выше
+      let products =
+        JSON.parse(localStorage.getItem("products")) || defaultProducts;
+
+      // Сохраняем сразу, чтобы другие страницы увидели данные
+      if (!localStorage.getItem("products")) {
+        localStorage.setItem("products", JSON.stringify(products));
+      }
+
+      // Функция отрисовки таблицы
+      function renderAdminTable() {
+        const list = document.getElementById("admin-product-list");
+        list.innerHTML = products
+          .map(
+            (p, index) => `
+                <tr>
+                    <td><img src="${p.img}" class="product-img-preview" alt="img"></td>
+                    <td class="fw-bold">${p.title}</td>
+                    <td class="text-muted">${p.price}</td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-outline-warning me-1" onclick="prepareEdit(${index})">✎</button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${index})">🗑</button>
+                    </td>
+                </tr>
+            `,
+          )
+          .join("");
+      }
+
+      // Обработка формы (Добавление и Редактирование)
+      document
+        .getElementById("product-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const idInput = document.getElementById("product-id").value;
+          const title = document.getElementById("p-title").value;
+          const price = document.getElementById("p-price").value;
+          const img =
+            document.getElementById("p-img").value || "img/no-photo.jpg";
+
+          if (idInput !== "") {
+            // Если id есть, редактируем существующий
+            products[idInput] = { ...products[idInput], title, price, img };
+          } else {
+            // Если id нет, добавляем новый
+            products.push({ id: Date.now(), title, price, img });
+          }
+
+          saveAndRefresh();
+          resetForm();
+        });
+
+      // Функция подготовки к редактированию
+      window.prepareEdit = function (index) {
+        const p = products[index];
+        document.getElementById("product-id").value = index;
+        document.getElementById("p-title").value = p.title;
+        document.getElementById("p-price").value = p.price;
+        document.getElementById("p-img").value = p.img;
+
+        document.getElementById("form-title").innerText = "Редактировать";
+        document.getElementById("submit-btn").innerText = "Обновить данные";
+        document.getElementById("cancel-btn").style.display = "block";
+      };
+
+      // Удаление товара
+      window.deleteProduct = function (index) {
+        if (
+          confirm(`Вы уверены, что хотите удалить "${products[index].title}"?`)
+        ) {
+          products.splice(index, 1);
+          saveAndRefresh();
+        }
+      };
+
+      function saveAndRefresh() {
+        localStorage.setItem("products", JSON.stringify(products));
+        renderAdminTable();
+      }
+
+      function resetForm() {
+        document.getElementById("product-form").reset();
+        document.getElementById("product-id").value = "";
+        document.getElementById("form-title").innerText = "Добавить товар";
+        document.getElementById("submit-btn").innerText = "Сохранить товар";
+        document.getElementById("cancel-btn").style.display = "none";
+      }
+
+      // Первый запуск
+      renderAdminTable();
+    </script>
+  </body>
+</html>
