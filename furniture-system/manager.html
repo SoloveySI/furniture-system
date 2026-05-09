@@ -12,7 +12,6 @@
     <nav class="navbar navbar-dark bg-dark mb-4">
       <div class="container">
         <span class="navbar-brand fw-bold">Личный кабинет менеджера</span>
-        <!-- Проверь, чтобы имя index.html было таким же, как твой файл с товарами -->
         <a href="index.html" class="btn btn-outline-light btn-sm"
           >Вернуться в каталог</a
         >
@@ -27,73 +26,72 @@
         </button>
       </div>
 
-      <div id="orders-table-container">
-        <!-- Здесь появятся заказы после того, как ты оформишь их в корзине -->
-      </div>
+      <div id="orders-table-container"></div>
     </div>
 
     <script>
       function renderManagerPanel() {
-        // Берем заказы из памяти (allOrders)
         const orders = JSON.parse(localStorage.getItem("allOrders")) || [];
         const container = document.getElementById("orders-table-container");
 
         if (orders.length === 0) {
           container.innerHTML = `
-                    <div class="alert alert-secondary text-center py-5">
-                        <h5>Заказов пока нет</h5>
-                        <p>Оформите заказ в корзине, чтобы он появился здесь.</p>
-                    </div>`;
+                      <div class="alert alert-secondary text-center py-5">
+                          <h5>Заказов пока нет</h5>
+                          <p>Оформите заказ в корзине, чтобы он появился здесь.</p>
+                      </div>`;
           return;
         }
 
         container.innerHTML = `
-                <table class="table table-bordered bg-white shadow-sm">
-                    <thead class="table-light">
-                        <tr>
-                            <th>№</th>
-                            <th>Дата и время</th>
-                            <th>Состав заказа</th>
-                            <th>Сумма</th>
-                            <th>Текущий статус</th>
-                            <th>Действие</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${orders
-                          .map(
-                            (order, index) => `
-                            <tr>
-                                <td>${index + 1}</td>
-                                <td>${order.date}</td>
-                                <td>${order.items.map((i) => `• ${i.title}`).join("<br>")}</td>
-                                <td class="fw-bold text-primary">${order.total}</td>
-                                <td>
-                                    <span class="badge ${order.status === "Новый" ? "bg-warning text-dark" : "bg-success"}">
-                                        ${order.status}
-                                    </span>
-                                </td>
-                                <td>
-                                    ${
-                                      order.status === "Новый"
-                                        ? `<button class="btn btn-success btn-sm w-100" onclick="processOrder(${index})">Принять в работу</button>`
-                                        : '<span class="text-muted small">Заказ принят</span>'
-                                    }
-                                </td>
-                            </tr>
-                        `,
-                          )
-                          .join("")}
-                    </tbody>
-                </table>`;
-      }
+            <table class="table table-bordered bg-white shadow-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>№</th>
+                        <th>Состав заказа</th>
+                        <th>Сумма</th>
+                        <th>Статус</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${orders
+                      .map((order, index) => {
+                        let actionButton = "";
+                        let badgeClass = "bg-warning text-dark";
 
-      // Эта функция меняет статус заказа
-      window.processOrder = function (index) {
-        let orders = JSON.parse(localStorage.getItem("allOrders"));
-        orders[index].status = "Принят менеджером";
+                        if (order.status === "Новый") {
+                          actionButton = `<button class="btn btn-sm btn-info w-100" onclick="updateStatus(${index}, 'Принят')">Принять</button>`;
+                        } else if (order.status === "Принят") {
+                          badgeClass = "bg-info text-dark";
+                          actionButton = `<button class="btn btn-sm btn-primary w-100" onclick="updateStatus(${index}, 'В обработке')">В обработку</button>`;
+                        } else if (order.status === "В обработке") {
+                          badgeClass = "bg-primary";
+                          actionButton = `<button class="btn btn-sm btn-success w-100" onclick="updateStatus(${index}, 'Собран')">Собрать</button>`;
+                        } else if (order.status === "Собран") {
+                          badgeClass = "bg-success";
+                          actionButton =
+                            '<span class="text-muted small">Готов</span>';
+                        }
+
+                        return `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${order.items.map((i) => i.title).join("<br>")}</td>
+                            <td class="fw-bold">${order.total}</td>
+                            <td><span class="badge ${badgeClass}">${order.status}</span></td>
+                            <td>${actionButton}</td>
+                        </tr>`;
+                      })
+                      .join("")}
+                </tbody>
+            </table>`;
+      }
+      window.updateStatus = function (index, newStatus) {
+        let orders = JSON.parse(localStorage.getItem("allOrders")) || [];
+        orders[index].status = newStatus;
         localStorage.setItem("allOrders", JSON.stringify(orders));
-        renderManagerPanel(); // Перерисовываем таблицу
+        renderManagerPanel();
       };
 
       window.clearHistory = function () {
@@ -103,7 +101,6 @@
         }
       };
 
-      // ЗАПУСК: Отрисовываем таблицу сразу при загрузке страницы
       renderManagerPanel();
     </script>
   </body>
