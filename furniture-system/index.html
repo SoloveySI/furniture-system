@@ -92,16 +92,17 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
-      <section class="mb-4">
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Поиск по названию..."
-          />
-          <button class="btn btn-success" type="button">Найти</button>
-        </div>
-      </section>
+     <section class="mb-4">
+  <div class="input-group">
+    <input
+      type="text"
+      id="search-input" 
+      class="form-control"
+      placeholder="Поиск по названию..."
+    />
+    <button class="btn btn-success" type="button" id="search-btn">Найти</button>
+  </div>
+</section>
 
       <div class="row">
         <section class="col-md-3 mb-4">
@@ -136,7 +137,7 @@
 
         <section class="col-md-9">
                 <h3 class="mb-4 text-center">Каталог товаров</h3>
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div id="products-container" class="row row-cols-1 row-cols-md-3 g-4">
                     
                     <div class="col">
                         <div class="card h-100 shadow-sm border-0 text-center">
@@ -229,12 +230,11 @@
 
                     <div class="col">
                         <div class="card h-100 shadow-sm border-0 text-center">
-                            <img src="img/Стол.jpg" style="max-width: 100%; height: auto;" alt="Стол компьютерный">
+                            <img src="img/Стол1.jpg" style="max-width: 100%; height: auto;" alt="Стол компьютерный">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title fs-6">Стол компьютерный</h5>
                                 <p class="card-text text-muted">Цена: 1100 руб.</p>
-                                <button class="btn <button class="btn btn-secondary mt-auto btn-add-to-cart">В корзину</button>
-                                btn-secondary mt-auto">В корзину</button>
+                                <button class="btn btn-secondary mt-auto btn-add-to-cart">В корзину</button>
                             </div>
                         </div>
                     </div>
@@ -276,6 +276,29 @@
     }
     
     updateCartBadge();
+    const searchBtn = document.getElementById('search-btn');
+const searchInput = document.getElementById('search-input');
+
+function performSearch() {
+    const query = searchInput.value.toLowerCase().trim();
+    const products = document.querySelectorAll('#products-container .col');
+
+    products.forEach(product => {
+        const title = product.querySelector('.card-title').innerText.toLowerCase();
+        if (title.includes(query)) {
+            product.style.display = 'block';
+        } else {
+            product.style.display = 'none';
+        }
+    });
+}
+
+searchBtn.addEventListener('click', performSearch);
+searchInput.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        performSearch();
+    }
+});
 </script>
   </body>
 </html>
