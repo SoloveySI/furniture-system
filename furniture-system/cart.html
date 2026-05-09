@@ -149,16 +149,34 @@
         finalPriceElement.innerText = total + " руб.";
       }
 
-      document.addEventListener("click", function (event) {
-        if (event.target.classList.contains("btn-delete")) {
-          const index = event.target.dataset.index;
-          let cart = JSON.parse(localStorage.getItem("cart")) || [];
-          cart.splice(index, 1);
-          localStorage.setItem("cart", JSON.stringify(cart));
-          renderCart();
-        }
-      });
+      document
+        .querySelector(".btn-success")
+        .addEventListener("click", function () {
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+          if (cart.length > 0) {
+            const total = document.getElementById("final-price").innerText;
+
+            const newOrder = {
+              id: Date.now(),
+              date: new Date().toLocaleString(),
+              items: cart,
+              total: total,
+              status: "Новый", // Статус для менеджера
+            };
+
+            const allOrders =
+              JSON.parse(localStorage.getItem("allOrders")) || [];
+            allOrders.push(newOrder);
+            localStorage.setItem("allOrders", JSON.stringify(allOrders));
+
+            alert("Заказ оформлен! Менеджер скоро свяжется с вами.");
+            localStorage.removeItem("cart");
+            renderCart();
+          } else {
+            alert("Корзина пуста");
+          }
+        });
       renderCart();
       document
         .querySelector(".btn-success")
